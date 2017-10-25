@@ -26,6 +26,7 @@ int main(int argc, char **argv)
   }
 
   ENetEvent event;
+  enet_uint8 cid = 0;
   while (1)
   {
     int ret = enet_host_service(server, &event, 0);
@@ -46,7 +47,8 @@ int main(int argc, char **argv)
                event.channelID);
 
         ENetPacket *packet = enet_packet_create(event.packet->data, event.packet->dataLength, ENET_PACKET_FLAG_RELIABLE);
-        enet_host_broadcast(server, 0, packet);
+        enet_host_broadcast(server, cid, packet);
+        cid ^= 1;
 
         enet_packet_destroy(event.packet);
         break;
