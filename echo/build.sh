@@ -1,2 +1,2 @@
-gcc server.c -o server -lenet
-gcc client.c -o client -lenet
+gcc server.c -o server.out -lenet
+gcc client.c -o client.out -lenet

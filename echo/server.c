@@ -46,7 +46,7 @@ int main(int argc, char **argv)
                event.channelID);
 
         ENetPacket *packet = enet_packet_create(event.packet->data, event.packet->dataLength, ENET_PACKET_FLAG_RELIABLE);
-        enet_peer_send(event.peer, 0, packet);
+        enet_host_broadcast(server, 0, packet);
 
         enet_packet_destroy(event.packet);
         break;

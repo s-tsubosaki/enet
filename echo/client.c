@@ -87,6 +87,9 @@ int main(int argc, char **argv)
       if (buf[strlen(buf) - 1] == '\n')
         buf[strlen(buf) - 1] = '\0';
 
+      if (strlen(buf) < 1)
+        continue;
+
       ENetPacket *packet = enet_packet_create(buf, strlen(buf) + 1, ENET_PACKET_FLAG_RELIABLE);
       enet_peer_send(peer, 0, packet);
     }
