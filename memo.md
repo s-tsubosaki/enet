@@ -1,0 +1,45 @@
+# サービス
+## メインループ
+* enet_host_create
+  * enet_socket_create
+    * enet_socket_bind(server)
+  * peerの数分
+    * enet_peer_reset
+      * enet_peer_on_disconnect
+      * enet_peer_reset_queues
+* enet_host_service
+  * まず以下の処理
+    * enet_protocol_dispatch_incoming_commands
+      * 接続状態を判定し、処理
+  * 次に以下の順で処理
+    * enet_host_bandwidth_throttle
+      * peerの帯域調整
+    * enet_protocol_send_outgoing_commands
+      * queueに溜まっているコマンドの実送信処理
+    * enet_protocol_receive_incoming_commands
+      * パケット受信処理
+      * 一度に受信するのは256個まで（ハードコーディング）
+      * enet_protocol_handle_incoming_commands
+        * 受け取ったパケットの処理
+    * enet_protocol_send_outgoing_commands
+      * ↑と同じ。なぜ２回呼ぶのか
+      * receive_incommingでackを返すので、それの処理？
+    * enet_protocol_dispatch_incoming_commands
+      * また呼ばれる
+      * 最初に呼ばれた後に、各処理でdispatchQueueがたまる？
+  * 最後にタイムアウトまでsocketwait
+    * enet_socket_wait
+## 接続
+* enet_host_connect
+  * enet_peer_queue_outgoing_command
+    * enet_peer_setup_outgoing_command
+## 送信
+* enet_peer_send
+  * mtuサイズ未満
+    * enet_peer_queue_outgoing_command
+      * enet_peer_setup_outgoing_command
+  * mtuサイズ以上
+    * fragmemtに分けてから、それぞれ
+      * enet_peer_setup_outgoing_command
+* enet_peer_setup_outgoing_command
+  * reliable,unreliableそれぞれのqueueにcommandを積む
