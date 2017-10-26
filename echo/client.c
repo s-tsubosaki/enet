@@ -1,5 +1,6 @@
 #include <enet/enet.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 int canReadInput()
 {
@@ -61,7 +62,8 @@ int main(int argc, char **argv)
   }
   // 接続ここまで
 
-  while (1)
+  bool isconnected = true;
+  while (isconnected)
   {
     int ret = enet_host_service(client, &event, 0);
     if (ret > 0)
@@ -75,6 +77,7 @@ int main(int argc, char **argv)
 
       case ENET_EVENT_TYPE_DISCONNECT:
         printf("Disconnect success.\n");
+        isconnected = false;
         break;
       case ENET_EVENT_TYPE_NONE:
         printf("enet event none\n");
@@ -90,8 +93,15 @@ int main(int argc, char **argv)
       if (strlen(buf) < 1)
         continue;
 
-      ENetPacket *packet = enet_packet_create(buf, strlen(buf) + 1, ENET_PACKET_FLAG_RELIABLE);
-      enet_peer_send(peer, 0, packet);
+      if (strcmp("quit", buf))
+      {
+        ENetPacket *packet = enet_packet_create(buf, strlen(buf) + 1, ENET_PACKET_FLAG_RELIABLE);
+        enet_peer_send(peer, 0, packet);
+      }
+      else
+      {
+        enet_peer_disconnect(peer, 0);
+      }
     }
   }
 

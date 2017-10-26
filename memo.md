@@ -33,6 +33,14 @@
 * enet_host_connect
   * enet_peer_queue_outgoing_command
     * enet_peer_setup_outgoing_command
+## 切断
+* enet_peer_disconnect
+  * enet_peer_reset_queues
+  * enet_peer_queue_outgoing_command
+  * その後、状況に応じて
+    * enet_peer_on_disconnect
+    * または
+    * enet_host_flush, enet_peer_reset
 ## 送信
 * enet_peer_send
   * mtuサイズ未満
