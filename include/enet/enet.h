@@ -17,15 +17,6 @@ extern "C" {
 #include "enet/list.h"
 #include "enet/callbacks.h"
 
-#define ENET_VERSION_MAJOR 1
-#define ENET_VERSION_MINOR 3
-#define ENET_VERSION_PATCH 13
-#define ENET_VERSION_CREATE(major, minor, patch) (((major) << 16) | ((minor) << 8) | (patch))
-#define ENET_VERSION_GET_MAJOR(version) (((version) >> 16) & 0xFF)
-#define ENET_VERSION_GET_MINOR(version) (((version) >> 8) & 0xFF)
-#define ENET_VERSION_GET_PATCH(version) ((version)&0xFF)
-#define ENET_VERSION ENET_VERSION_CREATE(ENET_VERSION_MAJOR, ENET_VERSION_MINOR, ENET_VERSION_PATCH)
-
 typedef enet_uint32 ENetVersion;
 
 struct _ENetHost;
@@ -422,25 +413,10 @@ typedef struct _ENetEvent
 ENET_API int enet_initialize(void);
 
 /** 
-  Initializes ENet globally and supplies user-overridden callbacks. Must be called prior to using any functions in ENet. Do not use enet_initialize() if you use this variant. Make sure the ENetCallbacks structure is zeroed out so that any additional callbacks added in future versions will be properly ignored.
-
-  @param version the constant ENET_VERSION should be supplied so ENet knows which version of ENetCallbacks struct to use
-  @param inits user-overridden callbacks where any NULL callbacks will use ENet's defaults
-  @returns 0 on success, < 0 on failure
-*/
-ENET_API int enet_initialize_with_callbacks(ENetVersion version, const ENetCallbacks *inits);
-
-/** 
   Shuts down ENet globally.  Should be called when a program that has
   initialized ENet exits.
 */
 ENET_API void enet_deinitialize(void);
-
-/**
-  Gives the linked version of the ENet library.
-  @returns the version number 
-*/
-ENET_API ENetVersion enet_linked_version(void);
 
 /** @} */
 
