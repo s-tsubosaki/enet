@@ -298,9 +298,6 @@ typedef struct _ENetPeer
   size_t totalWaitingData;
 } ENetPeer;
 
-/** Callback for intercepting received raw UDP packets. Should return 1 to intercept, 0 to ignore, or -1 to propagate an error. */
-typedef int(ENET_CALLBACK *ENetInterceptCallback)(struct _ENetHost *host, struct _ENetEvent *event);
-
 /** An ENet host for communicating with peers.
   *
   * No fields should be modified unless otherwise stated.
@@ -345,7 +342,6 @@ typedef struct _ENetHost
   enet_uint32 totalSentPackets;     /**< total UDP packets sent, user should reset to 0 as needed to prevent overflow */
   enet_uint32 totalReceivedData;    /**< total data received, user should reset to 0 as needed to prevent overflow */
   enet_uint32 totalReceivedPackets; /**< total UDP packets received, user should reset to 0 as needed to prevent overflow */
-  ENetInterceptCallback intercept;  /**< callback the user can set to intercept received raw UDP packets */
   size_t connectedPeers;
   size_t bandwidthLimitedPeers;
   size_t duplicatePeers;     /**< optional number of allowed peers from duplicate IPs, defaults to ENET_PROTOCOL_MAXIMUM_PEER_ID */

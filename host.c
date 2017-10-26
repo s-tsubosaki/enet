@@ -101,8 +101,6 @@ enet_host_create(const ENetAddress *address, size_t peerCount, size_t channelLim
   host->maximumPacketSize = ENET_HOST_DEFAULT_MAXIMUM_PACKET_SIZE;
   host->maximumWaitingData = ENET_HOST_DEFAULT_MAXIMUM_WAITING_DATA;
 
-  host->intercept = NULL;
-
   enet_list_clear(&host->dispatchQueue);
 
   for (currentPeer = host->peers;
