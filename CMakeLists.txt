@@ -72,7 +72,6 @@ set(INCLUDE_FILES
 
 set(SOURCE_FILES
     callbacks.c
-    compress.c
     host.c
     list.c
     packet.c
