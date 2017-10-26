@@ -85,7 +85,6 @@ enet_host_create(const ENetAddress *address, size_t peerCount, size_t channelLim
   host->peerCount = peerCount;
   host->commandCount = 0;
   host->bufferCount = 0;
-  host->checksum = NULL;
   host->receivedAddress.host = ENET_HOST_ANY;
   host->receivedAddress.port = 0;
   host->receivedData = NULL;

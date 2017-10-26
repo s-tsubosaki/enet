@@ -985,8 +985,6 @@ enet_protocol_handle_incoming_commands(ENetHost *host, ENetEvent *event)
   peerID &= ~(ENET_PROTOCOL_HEADER_FLAG_MASK | ENET_PROTOCOL_HEADER_SESSION_MASK);
 
   headerSize = (flags & ENET_PROTOCOL_HEADER_FLAG_SENT_TIME ? sizeof(ENetProtocolHeader) : (size_t) & ((ENetProtocolHeader *)0)->sentTime);
-  if (host->checksum != NULL)
-    headerSize += sizeof(enet_uint32);
 
   if (peerID == ENET_PROTOCOL_MAXIMUM_PEER_ID)
     peer = NULL;
@@ -1003,21 +1001,6 @@ enet_protocol_handle_incoming_commands(ENetHost *host, ENetEvent *event)
          peer->address.host != ENET_HOST_BROADCAST) ||
         (peer->outgoingPeerID < ENET_PROTOCOL_MAXIMUM_PEER_ID &&
          sessionID != peer->incomingSessionID))
-      return 0;
-  }
-
-  if (host->checksum != NULL)
-  {
-    enet_uint32 *checksum = (enet_uint32 *)&host->receivedData[headerSize - sizeof(enet_uint32)],
-                desiredChecksum = *checksum;
-    ENetBuffer buffer;
-
-    *checksum = peer != NULL ? peer->connectID : 0;
-
-    buffer.data = host->receivedData;
-    buffer.dataLength = host->receivedDataLength;
-
-    if (host->checksum(&buffer, 1) != desiredChecksum)
       return 0;
   }
 
@@ -1653,13 +1636,6 @@ enet_protocol_send_outgoing_commands(ENetHost *host, ENetEvent *event, int check
       if (currentPeer->outgoingPeerID < ENET_PROTOCOL_MAXIMUM_PEER_ID)
         host->headerFlags |= currentPeer->outgoingSessionID << ENET_PROTOCOL_HEADER_SESSION_SHIFT;
       header->peerID = ENET_HOST_TO_NET_16(currentPeer->outgoingPeerID | host->headerFlags);
-      if (host->checksum != NULL)
-      {
-        enet_uint32 *checksum = (enet_uint32 *)&headerData[host->buffers->dataLength];
-        *checksum = currentPeer->outgoingPeerID < ENET_PROTOCOL_MAXIMUM_PEER_ID ? currentPeer->connectID : 0;
-        host->buffers->dataLength += sizeof(enet_uint32);
-        *checksum = host->checksum(host->buffers, host->bufferCount);
-      }
 
       currentPeer->lastSendTime = host->serviceTime;
 

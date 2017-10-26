@@ -298,9 +298,6 @@ typedef struct _ENetPeer
   size_t totalWaitingData;
 } ENetPeer;
 
-/** Callback that computes the checksum of the data held in buffers[0:bufferCount-1] */
-typedef enet_uint32(ENET_CALLBACK *ENetChecksumCallback)(const ENetBuffer *buffers, size_t bufferCount);
-
 /** Callback for intercepting received raw UDP packets. Should return 1 to intercept, 0 to ignore, or -1 to propagate an error. */
 typedef int(ENET_CALLBACK *ENetInterceptCallback)(struct _ENetHost *host, struct _ENetEvent *event);
 
@@ -340,7 +337,6 @@ typedef struct _ENetHost
   size_t commandCount;
   ENetBuffer buffers[ENET_BUFFER_MAXIMUM];
   size_t bufferCount;
-  ENetChecksumCallback checksum; /**< callback the user can set to enable packet checksums for this host */
   enet_uint8 packetData[2][ENET_PROTOCOL_MAXIMUM_MTU];
   ENetAddress receivedAddress;
   enet_uint8 *receivedData;
