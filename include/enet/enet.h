@@ -11,12 +11,7 @@ extern "C" {
 
 #include <stdlib.h>
 
-#ifdef _WIN32
-#include "enet/win32.h"
-#else
 #include "enet/unix.h"
-#endif
-
 #include "enet/types.h"
 #include "enet/protocol.h"
 #include "enet/list.h"

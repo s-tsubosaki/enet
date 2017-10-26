@@ -67,7 +67,6 @@ set(INCLUDE_FILES
     ${INCLUDE_FILES_PREFIX}/types.h
     ${INCLUDE_FILES_PREFIX}/unix.h
     ${INCLUDE_FILES_PREFIX}/utility.h
-    ${INCLUDE_FILES_PREFIX}/win32.h
 )
 
 set(SOURCE_FILES
@@ -78,7 +77,7 @@ set(SOURCE_FILES
     peer.c
     protocol.c
     unix.c
-    win32.c)
+    )
 
 source_group(include FILES ${INCLUDE_FILES})
 source_group(source FILES ${SOURCE_FILES})
