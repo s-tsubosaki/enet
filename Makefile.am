@@ -11,10 +11,11 @@ enetinclude_HEADERS = \
 	include/enet/types.h \
 	include/enet/unix.h \
 	include/enet/utility.h \
-	include/enet/win32.h
+	include/enet/win32.h \
+	include/enet/unity.h
 
 lib_LTLIBRARIES = libenet.la
-libenet_la_SOURCES = callbacks.c compress.c host.c list.c packet.c peer.c protocol.c unix.c win32.c
+libenet_la_SOURCES = callbacks.c compress.c host.c list.c packet.c peer.c protocol.c unix.c win32.c unity.c
 # see info '(libtool) Updating version info' before making a release
 libenet_la_LDFLAGS = $(AM_LDFLAGS) -version-info 7:1:0
 AM_CPPFLAGS = -I$(top_srcdir)/include

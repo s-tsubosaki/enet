@@ -1,0 +1,9 @@
+# cd ~/android-ndk-r13b/build/tools
+# ./make-standalone-toolchain.sh --platform=android-21 --toolchain=arm-linux-androideabi-4.9 --install-dir=~/ne/ndk_toolchain --arch=arm
+export BUILD_HOST=arm-linux-androideabi
+export ANDROID_TOOLCHAIN=~/ne/ndk_toolchain
+export CC=$ANDROID_TOOLCHAIN/bin/$BUILD_HOST-gcc
+export CFLAGS="-O3 -mthumb -march=armv7-a -mfloat-abi=softfp --sysroot=$ANDROID_TOOLCHAIN/sysroot"
+export RANLIB=$ANDROID_TOOLCHAIN/bin/$BUILD_HOST-ranlib
+# export LDFLAGS="-Wl,--fix-cortex-a8"
+./configure --host=$BUILD_HOST --prefix=$PWD/android

@@ -1,3 +1,7 @@
+unity.*o
+android/
+ios/
+osx/
 *.out
 .deps/
 .libs/

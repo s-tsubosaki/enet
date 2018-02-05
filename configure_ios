@@ -1,0 +1,8 @@
+export BUILD_HOST=arm-apple-darwin
+export SDKROOT="$(xcrun --sdk iphoneos --show-sdk-path)"
+export CC="$(xcrun --sdk iphoneos -f clang)"
+export CPP="$(xcrun --sdk iphoneos -f cc) -E -D __arm__=1"
+export CFLAGS="-isysroot `xcrun --sdk iphoneos --show-sdk-path` -arch armv7 -arch arm64 -miphoneos-version-min=9.0"
+export RANLIB="$(xcrun --sdk iphoneos -f ranlib)"
+export LIBTOOL="$(xcrun --sdk iphoneos -f libtool)"
+./configure --host=$BUILD_HOST --prefix=$PWD/ios --disable-shared
