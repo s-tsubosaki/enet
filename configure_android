@@ -5,5 +5,5 @@ export ANDROID_TOOLCHAIN=~/ne/ndk_toolchain
 export CC=$ANDROID_TOOLCHAIN/bin/$BUILD_HOST-gcc
 export CFLAGS="-O3 -mthumb -march=armv7-a -mfloat-abi=softfp --sysroot=$ANDROID_TOOLCHAIN/sysroot"
 export RANLIB=$ANDROID_TOOLCHAIN/bin/$BUILD_HOST-ranlib
-# export LDFLAGS="-Wl,--fix-cortex-a8"
+export LDFLAGS="-Wl,-s"
 ./configure --host=$BUILD_HOST --prefix=$PWD/android

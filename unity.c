@@ -67,6 +67,8 @@ void ENetService(ENetUnityEvent *ue, int32_t ms)
 
 void ENetSend(enet_uint8 *buf, int32_t len, int32_t channelID, int32_t flags)
 {
+  if (peer == NULL)
+    return;
   ENetPacket *packet = enet_packet_create(buf, len, flags);
   enet_peer_send(peer, 0, packet);
 }
