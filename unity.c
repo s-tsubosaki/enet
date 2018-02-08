@@ -1,5 +1,6 @@
 #include <enet/unity.h>
 #include <string.h>
+#include <stdio.h>
 
 ENetHost *host;
 ENetPeer *peer;
@@ -8,12 +9,14 @@ int32_t ENetInit(int32_t channel)
 {
   if (enet_initialize() != 0)
   {
+    printf("enet_initialize failed\n");
     return 1;
   }
 
   host = enet_host_create(NULL, 1, channel, 0, 0);
   if (host == NULL)
   {
+    printf("enet_host_create failed\n");
     return 1;
   }
 
@@ -34,6 +37,7 @@ int32_t ENetConnect(const char *ip, enet_uint16 port)
   }
   else
   {
+    printf("enet_host_connect failed\n");
     enet_peer_reset(peer);
     return 1;
   }
@@ -41,8 +45,11 @@ int32_t ENetConnect(const char *ip, enet_uint16 port)
 
 void ENetService(ENetUnityEvent *ue, int32_t ms)
 {
-  if (host == NULL)
+  if (host == NULL || peer == NULL)
+  {
+    printf("ENetService host: %p peer: %p\n", host, peer);
     return;
+  }
 
   ue->type = ENET_EVENT_TYPE_NONE;
 
@@ -67,8 +74,11 @@ void ENetService(ENetUnityEvent *ue, int32_t ms)
 
 void ENetSend(enet_uint8 *buf, int32_t len, int32_t channelID, int32_t flags)
 {
-  if (peer == NULL)
+  if (host == NULL || peer == NULL)
+  {
+    printf("ENetSend host: %p peer: %p\n", host, peer);
     return;
+  }
   ENetPacket *packet = enet_packet_create(buf, len, flags);
   enet_peer_send(peer, 0, packet);
 }
