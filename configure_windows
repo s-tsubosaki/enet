@@ -1,4 +1,2 @@
-export CC=x86_64-w64-mingw32-gcc
-export CFLAGS="-O2 -D_WIN32"
-sudo ./configure --host=x86_64-w64-mingw32
+sudo CC=x86_64-w64-mingw32-gcc CFLAGS="-O2 -D_WIN32 -DENET_BUILDING_LIBS -DENET_DLL" ./configure --host=x86_64-w64-mingw32
 # x86_64-w64-mingw32-gcc -shared -o .libs/enet.dll .libs/*.o -lwinmm -lws2_32
