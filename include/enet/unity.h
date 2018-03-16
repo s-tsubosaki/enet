@@ -1,4 +1,6 @@
-#include <enet/enet.h>
+#define ENET_BUILDING_LIB 1
+#include "enet/enet.h"
+#include "enet/utility.h"
 
 typedef struct
 {
@@ -9,8 +11,8 @@ typedef struct
   enet_uint8 data[65536];
 } ENetUnityEvent;
 
-int32_t ENetInit(int32_t channel);
-int32_t ENetConnect(const char *ip, enet_uint16 port);
-void ENetService(ENetUnityEvent *ue, int32_t ms);
-void ENetSend(enet_uint8 *data, int32_t len, int32_t channelID, int32_t flags);
+enet_int32 ENetInit(enet_int32 channel);
+enet_int32 ENetConnect(const char *ip, enet_uint16 port);
+void ENetService(ENetUnityEvent *ue, enet_int32 ms);
+void ENetSend(enet_uint8 *data, enet_int32 len, enet_int32 channelID, enet_int32 flags);
 void ENetDestroy();

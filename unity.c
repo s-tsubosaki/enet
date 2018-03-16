@@ -5,7 +5,7 @@
 ENetHost *host;
 ENetPeer *peer;
 
-int32_t ENetInit(int32_t channel)
+enet_int32 ENetInit(enet_int32 channel)
 {
   if (enet_initialize() != 0)
   {
@@ -23,7 +23,7 @@ int32_t ENetInit(int32_t channel)
   return 0;
 }
 
-int32_t ENetConnect(const char *ip, enet_uint16 port)
+enet_int32 ENetConnect(const char *ip, enet_uint16 port)
 {
   ENetAddress address;
   enet_address_set_host(&address, ip);
@@ -43,7 +43,7 @@ int32_t ENetConnect(const char *ip, enet_uint16 port)
   }
 }
 
-void ENetService(ENetUnityEvent *ue, int32_t ms)
+void ENetService(ENetUnityEvent *ue, enet_int32 ms)
 {
   if (host == NULL || peer == NULL)
   {
@@ -72,7 +72,7 @@ void ENetService(ENetUnityEvent *ue, int32_t ms)
   }
 }
 
-void ENetSend(enet_uint8 *buf, int32_t len, int32_t channelID, int32_t flags)
+void ENetSend(enet_uint8 *buf, enet_int32 len, enet_int32 channelID, enet_int32 flags)
 {
   if (host == NULL || peer == NULL)
   {

@@ -2,7 +2,9 @@
  @file  protocol.c
  @brief ENet protocol functions
 */
+#ifndef _WIN32
 #include <stdio.h>
+#endif
 #include <string.h>
 #define ENET_BUILDING_LIB 1
 #include "enet/utility.h"
