@@ -25,40 +25,46 @@ int main(int argc, char **argv)
     exit(EXIT_FAILURE);
   }
 
-  ENetEvent event;
+  ENetEvent events[32];
   enet_uint8 cid = 0;
   while (1)
   {
-    int ret = enet_host_service(server, &event, 0);
+    int ret = enet_host_service2(server, events, 32, 0);
     if (ret > 0)
     {
-      switch (event.type)
+      for (int i = 0; i < 32; i++)
       {
-      case ENET_EVENT_TYPE_CONNECT:
-        printf("A new client connected from %x:%u.\n", event.peer->address.host, event.peer->address.port);
-        event.peer->data = "Client information";
-        break;
+        ENetEvent event = events[i];
+        if (event.type == ENET_EVENT_TYPE_NONE)
+          break;
+        switch (event.type)
+        {
+        case ENET_EVENT_TYPE_CONNECT:
+          printf("A new client connected from %x:%u.\n", event.peer->address.host, event.peer->address.port);
+          event.peer->data = "Client information";
+          break;
 
-      case ENET_EVENT_TYPE_RECEIVE:
-        printf("A packet of length %u containing %s was received from %s on channel %u.\n",
-               event.packet->dataLength,
-               event.packet->data,
-               event.peer->data,
-               event.channelID);
+        case ENET_EVENT_TYPE_RECEIVE:
+          printf("A packet of length %u containing %s was received from %s on channel %u.\n",
+                 event.packet->dataLength,
+                 event.packet->data,
+                 event.peer->data,
+                 event.channelID);
 
-        ENetPacket *packet = enet_packet_create(event.packet->data, event.packet->dataLength, ENET_PACKET_FLAG_RELIABLE);
-        enet_host_broadcast(server, cid, packet);
-        cid ^= 1;
+          ENetPacket *packet = enet_packet_create(event.packet->data, event.packet->dataLength, ENET_PACKET_FLAG_RELIABLE);
+          enet_host_broadcast(server, cid, packet);
+          cid ^= 1;
 
-        enet_packet_destroy(event.packet);
-        break;
+          enet_packet_destroy(event.packet);
+          break;
 
-      case ENET_EVENT_TYPE_DISCONNECT:
-        printf("%s disconnected.\n", event.peer->data);
-        event.peer->data = NULL;
+        case ENET_EVENT_TYPE_DISCONNECT:
+          printf("%s disconnected.\n", event.peer->data);
+          event.peer->data = NULL;
 
-      case ENET_EVENT_TYPE_NONE:
-        printf("enet event none\n");
+        case ENET_EVENT_TYPE_NONE:
+          printf("enet event none\n");
+        }
       }
     }
   }
